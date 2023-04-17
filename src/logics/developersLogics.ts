@@ -47,19 +47,19 @@ export const lisDEveloperInfos =async(req:Request,res:Response):Promise<Response
 const id:number=parseInt(req.params.id)
 const queryString:string=`
 SELECT 
-"dev".id as "developerId",
-"dev".name as "developerName",
-"dev".email as "developerEmail",
+dev.id as "developerId",
+dev.name as "developerName",
+dev.email as "developerEmail",
 
 "dInfo".developerSince as "developerInfoDeveloperSince",
 "dInfo".preferredOs  as "developerInfoPreferredOS",
 
 FROM
-   developers "dev" 
+   developers dev 
 LEFT JOIN 
- developer_infos "dInfo"   ON dev.id =developer_infos."developerId"
+ developer_infos "dInfo"  ON dev.id = "dInfo"."developerId"
  WHERE
- "dev".id=$1
+ dev.id=$1
 
 `;
 const queryConfig:QueryConfig={
@@ -71,8 +71,6 @@ const queryResult:QueryResult<IdeveloperInforesponse>=await client.query(queryCo
 
 return res.status(200).json(queryResult.rows[0]);
 }
-
-
 
 export const UpdateDevInfos = async (
     req: Request,
