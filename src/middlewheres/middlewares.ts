@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { IDeveloperInfo, Ideveloper } from "./interfaces";
+import { IDeveloperInfo, Ideveloper } from "../interfaces/devInterfaces";
 import { QueryConfig, QueryResult } from "pg";
-import { client } from "./database";
+import { client } from "../database";
 
 export const ensureEmailExistsMiddleware = async (
   request: Request,

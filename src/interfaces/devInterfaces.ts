@@ -13,3 +13,12 @@
     developerId?:number;
  }
  export type IdeveloperInfoRequest =Omit<IDeveloperInfo,"id">
+
+ export interface IdeveloperInforesponse{
+   id:number;
+   name:string;
+   email:string;
+   developerSince:Date| null;
+   preferredOs:string|null;
+
+ }

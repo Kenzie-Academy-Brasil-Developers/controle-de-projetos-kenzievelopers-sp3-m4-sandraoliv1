@@ -1,6 +1,6 @@
-import { Client } from "pg";
-import "dotenv/config";
 
+import "dotenv/config";
+import { Client } from "pg";
 const config = () => {
   if (process.env.NODE_ENV === "test") {
     return {
