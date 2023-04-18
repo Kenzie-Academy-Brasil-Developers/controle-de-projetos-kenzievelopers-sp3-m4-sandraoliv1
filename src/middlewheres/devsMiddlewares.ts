@@ -35,7 +35,9 @@ export const ensuredeveloperExistsMiddleware = async (
     response: Response,
     next: NextFunction
   ): Promise<Response | void> => {
-    const id: number = parseInt(request.params.id);
+    const paramsId: number = parseInt(request.params.id);
+    const bodyId:number=request.body.developerId
+   
    
     const queryString: string = `
       SELECT
@@ -47,7 +49,7 @@ export const ensuredeveloperExistsMiddleware = async (
       `;
     const queryConfig: QueryConfig = {
       text: queryString,
-      values: [id],
+      values: [bodyId || paramsId],
     };
     const queryResult: QueryResult<IDeveloperInfo> = await client.query(queryConfig);
     if (queryResult.rowCount === 0) {

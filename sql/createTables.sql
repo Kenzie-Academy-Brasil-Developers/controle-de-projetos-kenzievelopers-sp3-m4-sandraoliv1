@@ -2,15 +2,18 @@
 
 CREATE TABLE IF NOT EXISTS developers(
     "id" SERIAL PRIMARY KEY,
+    "name"  VARCHAR (50) NOT NULL, 
     "email" VARCHAR (50) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS developers_info(
+ CREATE TYPE "OS" AS ENUM('Windows','Linux' ,'MacOs');
+
+CREATE TABLE IF NOT EXISTS developer_infos(
     "id" SERIAL PRIMARY KEY,
     "developerSince" DATE NOT NULL,
-    "preferredOs" OS NOT NULL,
+    "preferredOS" "OS" NOT NULL,
     "developerId" INTEGER NOT NULL UNIQUE,
-    FOREIGN KEY("developerId") REFERENCES developers(id) ON DELETE CASCADE
+    FOREIGN KEY("developerId") REFERENCES developers("id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS projects(
@@ -18,11 +21,11 @@ CREATE TABLE IF NOT EXISTS projects(
     "name" VARCHAR (50) NOT NULL,
     "description" TEXT,
     "estimatedTime" VARCHAR (20) NOT NULL,
-   " repository" VARCHAR(120) NOT NULL,
+   "repository" VARCHAR(120) NOT NULL,
     "startDate" DATE NOT NULL,
     "endDate" DATE,
     "developerId" INTEGER NOT NULL,
-    FOREIGN KEY ("developerId") REFERENCES developers(id) ON DELETE SET NULL
+    FOREIGN KEY ("developerId") REFERENCES developers("id") ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS technologies(
@@ -47,6 +50,6 @@ CREATE TABLE IF NOT EXISTS projects_technologies(
     "addedIn" DATE NOT NULL,
     "technologyId" INTEGER NOT NULL,
     "projectId" INTEGER NOT NULL,
-    FOREIGN KEY ("technologyId") REFERENCES technologies(id) ON DELETE CASCADE,
-    FOREIGN KEY ("projectId") REFERENCES projects_technologies(id) ON DELETE CASCADE
+    FOREIGN KEY ("technologyId") REFERENCES technologies("id") ON DELETE CASCADE,
+    FOREIGN KEY ("projectId") REFERENCES projects_technologies("id") ON DELETE CASCADE
 );
