@@ -30,7 +30,7 @@ return res.status(201).json(queryResult.rows[0])
     const queryString:string=format(
         `
         INSERT INTO
-            developer_info(%I)
+            developer_infos(%I)
         VALUES
             (%L)
             RETURNING *;
@@ -40,24 +40,25 @@ return res.status(201).json(queryResult.rows[0])
         Object.values(data)
     )
     const queryResult:QueryResult<IdeveloperInfoRequest>=await client.query( queryString)
-return res.status(201).json(queryResult.rows[0])
+
+   return res.status(201).json(queryResult.rows[0])
 }
 
 export const listDeveloperInfos =async(req:Request,res:Response):Promise<Response>=>{
 const id:number=parseInt(req.params.id)
 const queryString:string=`
 SELECT 
-dev.id as "developerId",
-dev.name as "developerName",
-dev.email as "developerEmail",
-"dInfo"."developerSince" as "developerInfoDeveloperSince",
-"dInfo"."preferredOS" as "developerInfoPreferredOS"
+    dev.id as "developerId",
+    dev.name as "developerName",
+    dev.email as "developerEmail",
+    "dInfo"."developerSince" as "developerInfoDeveloperSince",
+    "dInfo"."preferredOS" as "developerInfoPreferredOS"
 FROM
-   developers dev 
+    developers dev 
 LEFT JOIN 
- developer_infos "dInfo"  ON dev.id = "dInfo"."developerId"
+    developer_infos "dInfo"  ON dev.id = "dInfo"."developerId"
  WHERE
- dev.id=$1;
+    dev.id=$1;
 
 `;
 const queryConfig:QueryConfig={
@@ -65,7 +66,6 @@ const queryConfig:QueryConfig={
     values:[id]
 };
 const queryResult:QueryResult<IdeveloperInforesponse>=await client.query(queryConfig)
-
 return res.status(200).json(queryResult.rows[0]);
 }
 
@@ -108,9 +108,9 @@ export const UpdateDevInfos = async (
     const queryString: string = `
     DELETE
     FROM
-    developers
+        developers
     WHERE
-    id = $1
+        id = $1
     `;
     const queryConfig: QueryConfig = {
       text: queryString,
@@ -118,6 +118,5 @@ export const UpdateDevInfos = async (
     };
   
     await client.query(queryConfig);
-  
     return response.status(204).send();
   };

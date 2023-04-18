@@ -2,8 +2,8 @@ import express, { Application } from "express";
 import "dotenv/config";
 import { UpdateDevInfos, createDeveloperInfo, createdeveloper, listDeveloperInfos, removeDeveloperFromList } from "./logics/developersLogics";
 import { ensureEmailExistsMiddleware, ensuredeveloperExistsMiddleware } from "./middlewheres/devsMiddlewares";
-import { UpdateProject, createProject, listProjectById, removeprojectFromList } from "./logics/projectsLogics";
-import { ensureProjectExistsMiddleware, ensureProjectNameExistsMiddleware } from "./middlewheres/projectsMiddleweres";
+import { UpdateProject, addTechnologieToProject, createProject, listProjectById, removeprojectFromList } from "./logics/projectsLogics";
+import { ensureProjectExistsMiddleware, ensureProjectNameExistsMiddleware, verifyProjectNameMiddleware } from "./middlewheres/projectsMiddleweres";
 
 const app: Application = express();
 app.use(express.json())
@@ -17,7 +17,7 @@ app.post("/projects",ensuredeveloperExistsMiddleware,ensureProjectNameExistsMidd
 app.get("/projects/:id",ensureProjectExistsMiddleware,listProjectById)
 app.patch("/projects/:id",ensureProjectExistsMiddleware,UpdateProject)
 app.delete("/projects/:id",ensureProjectExistsMiddleware,removeprojectFromList)
-app.post(" /projects/:id/technologies",ensureProjectExistsMiddleware)
+app.post("/projects/:id/technologies",ensureProjectExistsMiddleware,verifyProjectNameMiddleware,addTechnologieToProject)
 app.delete("/projects/:id/technologies/:name",ensureProjectExistsMiddleware,removeprojectFromList)
 
 

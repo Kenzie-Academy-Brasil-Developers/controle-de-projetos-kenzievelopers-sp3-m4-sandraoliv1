@@ -51,8 +51,7 @@ export const listProjectById =async(req:Request,res:Response):Promise<Response>=
     };
 
     const queryResult:QueryResult<IprojectResponse>=await client.query(queryConfig)
-
-return res.status(200).json(queryResult.rows[0]);
+    return res.status(200).json(queryResult.rows[0]);
 }
 
 export const UpdateProject = async (
@@ -85,8 +84,6 @@ export const UpdateProject = async (
     return res.status(200).json(queryResult.rows[0]);
   };
 
-
-
 export const removeprojectFromList = async (
     request: Request,
     response: Response
@@ -95,9 +92,9 @@ export const removeprojectFromList = async (
     const queryString: string = `
     DELETE
     FROM
-    projects
+       projects
     WHERE
-    id = $1
+       id = $1
     `;
     const queryConfig: QueryConfig = {
       text: queryString,
@@ -105,6 +102,25 @@ export const removeprojectFromList = async (
     };
   
     await client.query(queryConfig);
-  
     return response.status(204).send();
   };
+
+  export const addTechnologieToProject=async(req:Request,res:Response):Promise<Response>=>{
+    const data:IprojectRequest=req.body
+     const projectId=parseInt(req.params.id)
+
+    const queryString:string=`
+        
+        INSERT INTO
+           projects_technologies("technologyId", "projectId", "addedIn")
+        VALUES
+            ($1,$2,$3)
+            RETURNING *;
+        `
+ const queryConfig:QueryConfig={
+  text:queryString,
+  values:[ res.locals.technologyId,projectId,new Date() ]
+ }
+    const queryResult:QueryResult<Iprojects>=await client.query( queryConfig)
+    return res.status(201).json(queryResult.rows[0])
+}
